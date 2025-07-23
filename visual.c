@@ -17,11 +17,15 @@ int main(void) {
     InitWindow(screenWidth, screenHeight, "Botão em raylib");
 
     // Posição e tamanho do botão
-    Rectangle buttonRect1 = { screenWidth / 2 - 75, screenHeight / 2 - 25, 150, 50 };
+    Rectangle buttonRect1 = { 0.0f, 35.0f, 100, 30 };
     // buttonRect2 and buttonRect3 are declared but not used, kept for completeness
-    Rectangle buttonRect2 = { screenWidth / 2 - 75, screenHeight / 2 - 25, 150, 50 };
-    Rectangle buttonRect3 = { screenWidth / 2 - 75, screenHeight / 2 - 25, 150, 50 };
-    const char* buttonText = "Clique Aqui!";
+    Rectangle buttonRect2 = { 250.0f,35.0f, 100, 30 };
+    Rectangle buttonRect3 = { 500.0f,35.0f, 100, 30 };
+    Rectangle buttonRect4 = { 500.0f,262.5f, 150, 30 };
+    const char* buttonText1 = "cache1";
+    const char* buttonText2 = "cache2";
+    const char* buttonText3 = "cache3";
+    const char* buttonText4 = "novo paciente";
     Color buttonColor = LIGHTGRAY;
 
     bool statusAtivo = false;
@@ -29,14 +33,8 @@ int main(void) {
     float textureScaleFactor = 0.10f;
 
     float posya, posxa;
-    int a, b; // 'c' removed as 'somar' is commented out
-    a = 10;
-    b = 20;
-    char numberAsString[32];
-    // c = somar(a, b); // Function 'somar' is not defined, so this line is commented out
-
-    // TFila filaPacientes; // TFila struct definition is missing, so these lines are commented out
-    // int maxQueueCapacity = 5;
+   
+ 
 
     // Removed the redundant InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
@@ -82,9 +80,9 @@ int main(void) {
 
     int fontSize = 30;
     int boxWidth = 300;
-    float filay = 300.0f;   // Renamed from queueDisplayY
-    float espacox = 20.0f;  // Renamed from charSpacingX
-    float comecox = 50.0f;  // Renamed from queueStartX
+    float filay = 300.0f;  
+    float espacox = 20.0f;  
+    float comecox = 50.0f;  
 
     while (!WindowShouldClose()) {
         // --- Atualização ---
@@ -167,18 +165,35 @@ int main(void) {
 
         // Draw Button
         DrawRectangleRec(buttonRect1, buttonColor);
+        DrawRectangleRec(buttonRect2, buttonColor);
+        DrawRectangleRec(buttonRect3, buttonColor);
+        DrawRectangleRec(buttonRect4, buttonColor);
         // Centraliza o texto no botão (aproximadamente)
-        int textWidth = MeasureText(buttonText, 20);
-        DrawText(buttonText, buttonRect1.x + (buttonRect1.width - textWidth) / 2, buttonRect1.y + (buttonRect1.height - 20) / 2, 20, BLACK);
-
+        int textWidth = MeasureText(buttonText1, 20);
+        int textWidth2 = MeasureText(buttonText4, 20);
+        DrawText("Fila de Clientes:", comecox, filay - 30, 20, BLACK);
+        DrawText(buttonText1, buttonRect1.x + (buttonRect1.width - textWidth) / 2, buttonRect1.y + (buttonRect1.height - 20) / 2, 20, BLACK);
+        DrawText(buttonText2, buttonRect2.x + (buttonRect2.width - textWidth) / 2, buttonRect2.y + (buttonRect2.height - 20) / 2, 20, BLACK);
+        DrawText(buttonText3, buttonRect3.x + (buttonRect3.width - textWidth) / 2, buttonRect3.y + (buttonRect3.height - 20) / 2, 20, BLACK);
+        DrawText(buttonText4, buttonRect4.x + (buttonRect4.width - textWidth2) / 2, filay-30 , 20, BLACK);
         // Desenha os Pacientes na Fila (requires TFila and queue functions to be defined and linked)
-        DrawText("Fila de pacientes:", comecox, filay - 30, 20, BLACK);
+        DrawText("Fila de Clientes:", comecox, filay - 30, 20, BLACK);
         Paciente currentQueuedPaciente;
         float currentX = comecox;
 
-        
+        // The loop below will cause a compilation error if TFila and its functions are not defined.
+        // It's commented out here to ensure the rest of the graphics work.
+        /*
+        for (int q_idx = 0; q_idx < Fila_size(&filaPacientes); q_idx++) {
+            if (Fila_peek_at(&filaPacientes, q_idx, (char*)&currentQueuedPaciente)) {
+                float displayX = currentX + (q_idx * (espacox + (pessoa.width * textureScaleFactor)));
+                DrawTextureEx(pessoa, (Vector2){ displayX, filay }, 0.0f, textureScaleFactor, WHITE);
+                DrawText(currentQueuedPaciente.name, displayX, filay + (pessoa.height * textureScaleFactor) + 5, 15, DARKGRAY);
+            }
+        }
+        */
 
-       
+        // Draw the main moving 'pessoa' texture
         DrawTextureEx(pessoa, (Vector2){ x, y}, 0.0f, scaleFactor, WHITE);
 
         EndDrawing();
