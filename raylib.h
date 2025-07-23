@@ -78,6 +78,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
+#include <unistd.h>
 #ifndef RAYLIB_H
 #define RAYLIB_H
 
@@ -1611,14 +1613,7 @@ char* TruncateText(const char* text, int fontSize, int maxWidth) {
 
     return truncatedText;
 }
-/******************************************************************************
 
-Welcome to GDB Online.
-GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
-C#, OCaml, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
-Code, Compile, Run and Debug online from anywhere in world.
-
-*******************************************************************************/
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -1628,6 +1623,7 @@ Code, Compile, Run and Debug online from anywhere in world.
 #define TYPE_FILA 2
 
 typedef struct tagFila {
+  void  *elements;
   int    type;// tipo da estrutura Pilha ou Fila
   char  *buffer;// Buffer para guardar os elementos
   char   *first;// ponteiro para primeiro elemento
@@ -1666,7 +1662,7 @@ bool Fila_create(TFila *fila, int sizeElement, int max, int type)
   fila->last = fila->buffer;
   fila->size = 0;
   fila->type = type;
-  
+
   return true;
 }
 
@@ -1684,9 +1680,28 @@ void Fila_destroy(TFila *fila){
   
 
 bool Fila_put(TFila *fila,char *data){
-  if(data == NULL){
+    if(data == NULL){
+        return false;
+    }
+    if(Fila_isFull(fila)==false){
+        // copia o dado para a Fila
+        memcpy(fila->last,data,fila->sizeElement);
+        // incremento o ponteiro do ultimo
+        if (fila->size < fila->maxElement){
+            // Incrementa ponteiro
+            fila->last += fila->sizeElement;
+            // checa se nao deve circular o ponteiro
+            if(fila->type == TYPE_FILA){
+                if(fila->last >= fila->buffer + fila->maxElement*fila->sizeElement)
+                   fila->last = fila->buffer;
+            }
+           
+            // increnta o numero de elementos na fila
+            fila->size++;
+            return true;
+        }
+    }
     return false;
-  }
   if(Fila_isFull(fila)==false){
     // copia o dado para a Fila
     memcpy(fila->last,data,fila->sizeElement);
@@ -1793,7 +1808,31 @@ void Fila_dump(TFila *fila){
     printf("-----------------------\n");
   }
 }
+bool Fila_peek_at(TFila *fila, int index, char *data) {
+    if (fila == NULL || data == NULL || Fila_isEmpty(fila) || index < 0 || index >= fila->size) {
+        return false; 
+    }
 
+    char *source_ptr;
+
+    if (fila->type == TYPE_FILA) { 
+        source_ptr = fila->first + (index * fila->sizeElement);
+        if (source_ptr >= fila->buffer + fila->maxElement * fila->sizeElement) {
+
+            source_ptr -= fila->maxElement * fila->sizeElement;
+        }
+    } else { 
+
+        source_ptr = fila->last - fila->sizeElement - (index * fila->sizeElement);
+ 
+        if (source_ptr < fila->buffer) {
+             return false;
+        }
+    }
+
+    memcpy(data, source_ptr, fila->sizeElement);
+    return true;
+}
 
 
   
