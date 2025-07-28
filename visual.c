@@ -1,7 +1,6 @@
 #include "raylib.h"
 #define MAX_MOVING_PATIENTS 3 
 
-
 typedef struct {
     char name[10]; 
     float x;       
@@ -17,76 +16,32 @@ float COMECAR_X = 350.0f;
 float COMECAR_Y = 200.0f;     
 float andar=5.0f;
 float limitey =100.0f;
-float tempo_at=5.0f;
+//float tempo_at=5.0f;
 float tempo_at1=10.0f;
-float tempo_at2=5.0f;
+float tempo_at2=1.0f;
 float tempo_at3=7.5f;
 
-bool moverCache2(float *Y) {
-    if (*Y > limitey) {
-        *Y -= andar; 
-        if (*Y < limitey) {
-            *Y = limitey; 
-        }
-        return true; 
-    }
-    return false;
-}
-bool moverCache1(float *X, float *Y) {
 
-    if (*Y > 200.0f) {
-        *Y -= andar;
-        if (*Y < 200.0f) *Y = 200.0f; 
-        return true;
-    }
-
-    else if (*X > 100.0f) {
-        *X -= andar; 
-        if (*X < 100.0f) *X = 100.0f;
-        return true;
-    }
-    else if (*Y > limitey) {
-        *Y -= andar; 
-        if (*Y < limitey) *Y = limitey; 
-        return true; 
-    }
-    //tempo_at+=5.0f;
-    return false;
-}
-
-bool moverCache3(float *X, float *Y) {
-    if (*Y > 200.0f) {
-        *Y -= andar; 
-        if (*Y < 200.0f) *Y = 200.0f; 
-        return true; 
-    }
-    else if (*X < 600.0f) {
-        *X += andar; 
-        if (*X > 600.0f) *X = 600.0f; 
-        return true; 
-    }
-    else if (*Y > limitey) {
-        *Y -= andar;
-        if (*Y < limitey) *Y = limitey;
-        return true; 
-    }
-    return false;
-}
-
-
-bool isMoveTypeActive(Paciente *pacientes, int count, int type) {
-    for (int i = 0; i < count; i++) {
-
-        if (pacientes[i].moveType == type) {
-            return true;
-        }
-    }
-    return false;
-}
 int main(void) {
+    ///menu
+    int guiches[4];
+    guiches[1]=0;
+    guiches[2]=0;
+    guiches[3]=0;
+ 
+    char inputName[32] = "\0"; 
+    int letterCount = 0; 
+
+    
+    
+    
+    
+    int batata=0;
+    ///
     const int screenWidth = 800;
     const int screenHeight = 400;
-    InitWindow(screenWidth, screenHeight, "Botão em raylib");
+    InitWindow(screenWidth, screenHeight, "clinica");
+
     ///retangulos
     Rectangle buttonRect1 = { 5.0f, 35.0f, 95, 30 };
     Rectangle buttonRect2 = { 255.0f,35.0f, 100, 30 };
@@ -95,8 +50,7 @@ int main(void) {
     Rectangle ate1 = { 0.0f,0.0f, 225, 90};
     Rectangle ate2 = { 250.0f,0.0f, 225, 90};
     Rectangle ate3 = { 500.0f,0.0f, 225, 90};
-    
-    
+     
     ///retangulos
     const char* buttonText1 = "cache1";
     const char* buttonText2 = "cache2";
@@ -162,11 +116,69 @@ int main(void) {
         
         
 ///adicionar
+bool isMoveTypeActive(Paciente *pacientes, int count, int type) {
+    for (int i = 0; i < count; i++) {
+
+        if (pacientes[i].moveType == type) {
+            return true;
+        }
+    }
+    return false;
+}
+bool moverCache2(float *Y) {
+    if (*Y > limitey) {
+        *Y -= andar; 
+        if (*Y < limitey) {
+            *Y = limitey; 
+        }
+        return true; 
+    }
+    return false;  
+}
+bool moverCache1(float *X, float *Y) {
+
+    if (*Y > 200.0f) {
+        *Y -= andar;
+        if (*Y < 200.0f) *Y = 200.0f; 
+        return true;
+    }
+
+    else if (*X > 100.0f) {
+        *X -= andar; 
+        if (*X < 100.0f) *X = 100.0f;
+        return true;
+    }
+    else if (*Y > limitey) {
+        *Y -= andar; 
+        if (*Y < limitey) *Y = limitey; 
+        return true; 
+    }
+    return false;
+}
+
+bool moverCache3(float *X, float *Y) {
+    if (*Y > 200.0f) {
+        *Y -= andar; 
+        if (*Y < 200.0f) *Y = 200.0f; 
+        return true; 
+    }
+    else if (*X < 600.0f) {
+        *X += andar; 
+        if (*X > 600.0f) *X = 600.0f; 
+        return true; 
+    }
+    else if (*Y > limitey) {
+        *Y -= andar;
+        if (*Y < limitey) *Y = limitey;
+        return true; 
+    }
+    return false;
+}
 
         bool isMouseOverEnqueueButton = CheckCollisionPointRec(mousePoint, buttonRect4);
         if (isMouseOverEnqueueButton) {
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                TraceLog(LOG_INFO, "Botão 'Adicionar à Fila' clicado!");
+
                 if (!Fila_isFull(&filaPacientes)) {
                     Paciente novop;
                     snprintf(novop.name, sizeof(novop.name), "P%d", Fila_size(&filaPacientes) + 1);
@@ -177,9 +189,7 @@ int main(void) {
                     if (Fila_put(&filaPacientes, (char*)&novop)) {
                         TraceLog(LOG_INFO, TextFormat("Adicionado '%s' à fila.", novop.name));
                     }
-                } else {
-                    TraceLog(LOG_WARNING, "Fila de pacientes cheia! Não é possível adicionar mais.");
-                }
+                } 
             }
         }
 ///adicionar
@@ -191,20 +201,20 @@ int main(void) {
         bool isMouseOverMoveCollectedButton = CheckCollisionPointRec(mousePoint, buttonRect2);
         if (isMouseOverMoveCollectedButton) {
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                if (isMoveTypeActive(pacientesParaMover, numPacientesParaMover, 1)) {
-                } else if (numPacientesParaMover < MAX_MOVING_PATIENTS) {
+                if (isMoveTypeActive(pacientesParaMover, numPacientesParaMover, 2)) {
+                } else if (numPacientesParaMover < MAX_MOVING_PATIENTS && guiches[2]==0) {
                     Paciente tempPaciente;
                     if (Fila_get(&filaPacientes, (char*)&tempPaciente)) {
+                        guiches[2]=1;
                         pacientesParaMover[numPacientesParaMover] = tempPaciente;
                         pacientesParaMover[numPacientesParaMover].x = COMECAR_X; 
                         pacientesParaMover[numPacientesParaMover].y = COMECAR_Y; 
-                        pacientesParaMover[numPacientesParaMover].moveType = 1;
+                        pacientesParaMover[numPacientesParaMover].moveType = 2;
                         pacientesParaMover[numPacientesParaMover].moveTimer = 0.0f;
                         pacientesParaMover[numPacientesParaMover].atend = tempo_at2;
                         numPacientesParaMover++;
                     } 
                 } 
-                Fila_dump(&filaPacientes);
             }
         }
 
@@ -212,20 +222,20 @@ int main(void) {
         bool isMouseOverMainPessoaMoveButton = CheckCollisionPointRec(mousePoint, buttonRect1);
         if (isMouseOverMainPessoaMoveButton) {
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                if (isMoveTypeActive(pacientesParaMover, numPacientesParaMover, 2)) {
-                } else if (numPacientesParaMover < MAX_MOVING_PATIENTS) {
+                if (isMoveTypeActive(pacientesParaMover, numPacientesParaMover, 1)) {
+                } else if (numPacientesParaMover < MAX_MOVING_PATIENTS&&guiches[1]==0) {
                     Paciente tempPaciente;
                     if (Fila_get(&filaPacientes, (char*)&tempPaciente)) {
+                        guiches[1]=1;
                         pacientesParaMover[numPacientesParaMover] = tempPaciente;
                         pacientesParaMover[numPacientesParaMover].x = COMECAR_X; 
                         pacientesParaMover[numPacientesParaMover].y = COMECAR_Y; 
-                        pacientesParaMover[numPacientesParaMover].moveType = 2;
-                        pacientesParaMover[numPacientesParaMover].moveTimer = -10.0f;
+                        pacientesParaMover[numPacientesParaMover].moveType = 1;
+                        pacientesParaMover[numPacientesParaMover].moveTimer = 0.0f;
                         pacientesParaMover[numPacientesParaMover].atend = tempo_at1;
                         numPacientesParaMover++;
                     } 
                 } 
-                Fila_dump(&filaPacientes);
             }
         }
 
@@ -234,9 +244,10 @@ int main(void) {
         if (isMouseOverMainPessoaCache3Button) {
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 if (isMoveTypeActive(pacientesParaMover, numPacientesParaMover, 3)) {
-                } else if (numPacientesParaMover < MAX_MOVING_PATIENTS) {
+                } else if (numPacientesParaMover < MAX_MOVING_PATIENTS &&guiches[3]==0) {
                     Paciente tempPaciente;
                     if (Fila_get(&filaPacientes, (char*)&tempPaciente)) {
+                        guiches[3]=1;
                         pacientesParaMover[numPacientesParaMover] = tempPaciente;
                         pacientesParaMover[numPacientesParaMover].x = COMECAR_X; 
                         pacientesParaMover[numPacientesParaMover].y = COMECAR_Y;   
@@ -246,7 +257,6 @@ int main(void) {
                         numPacientesParaMover++;
                     } 
                 } 
-                Fila_dump(&filaPacientes);
             }
         } 
         ///açoes mover
@@ -255,10 +265,11 @@ int main(void) {
     ///limitar movimentos
         for (int i = 0; i < numPacientesParaMover; ) { 
             bool aindaMovendo = false;
+           
          
-            if (pacientesParaMover[i].moveType == 1) { 
+            if (pacientesParaMover[i].moveType == 2) { 
                 aindaMovendo = moverCache2(&pacientesParaMover[i].y); 
-            } else if (pacientesParaMover[i].moveType == 2) { 
+            } else if (pacientesParaMover[i].moveType == 1) { 
                 aindaMovendo = moverCache1(&pacientesParaMover[i].x, &pacientesParaMover[i].y);
             } else if (pacientesParaMover[i].moveType == 3) { 
                 aindaMovendo = moverCache3(&pacientesParaMover[i].x, &pacientesParaMover[i].y); 
@@ -271,9 +282,17 @@ int main(void) {
                     pacientesParaMover[i].moveTimer += GetFrameTime();
                 }
                 if (pacientesParaMover[i].moveTimer >= pacientesParaMover[i].atend) {
-                    pacientesParaMover[i].moveType = 0; 
-                    if (i != numPacientesParaMover - 1) {
-                        pacientesParaMover[i] = pacientesParaMover[numPacientesParaMover - 1];
+                    if (pacientesParaMover[i].moveType == 1) {
+                       guiches[1] = 0;
+                    }
+                    if (pacientesParaMover[i].moveType == 2) {
+                        guiches[2] = 0;
+                    }
+                    if (pacientesParaMover[i].moveType == 3) {
+                        guiches[3] = 0;
+                    }
+                    if (numPacientesParaMover > 1 && i != numPacientesParaMover - 1) {
+                    pacientesParaMover[i] = pacientesParaMover[numPacientesParaMover - 1];
                     }
                     numPacientesParaMover--; 
                 } else {
@@ -282,6 +301,13 @@ int main(void) {
             }
         }
         ///limitar move
+        if(batata==0){
+        BeginDrawing();
+        ClearBackground((Color){ 255, 255, 255, 100 });
+        batata=2;
+        EndDrawing();
+        }
+        if(batata==2){
         BeginDrawing();
         DrawRectangleRec(ate1, buttonColor);
         DrawRectangleRec(ate2, buttonColor);
@@ -334,10 +360,13 @@ int main(void) {
                 DrawText(pacientesParaMover[i].name, pacientesParaMover[i].x + (pessoa.width * textureScaleFactor / 2) - (nameWidth / 2),
                          pacientesParaMover[i].y + (pessoa.height * textureScaleFactor) + 5, 15, BLUE);
             }
-
+          DrawText(TextFormat("guiche 1 ocupado %d", guiches[1]), 0, 90, 5, BLACK);
+          DrawText(TextFormat("guiche 2 ocupado: %d", guiches[2]), 250, 90, 5, BLACK);
+          DrawText(TextFormat("guiche 3 ocupado: %d", guiches[3]), 500, 90, 5, BLACK);
         ///fila img
         
         EndDrawing();
+        }
     }
     UnloadTexture(pessoa);
     CloseWindow();
