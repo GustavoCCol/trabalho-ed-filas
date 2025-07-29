@@ -1,4 +1,4 @@
-# Problema
+# Objetivo
 "Gerenciamento de Fila com Múltiplos Atendentes"\
 Descrição: Simula laboratório com fila única e múltiplos atendentes, inclui distribuição de atendimentos.
 
@@ -11,3 +11,13 @@ Julio Pereira
 Gustavo Cavalcante  
 Joao Paulo  
 Udson Marçal  
+
+## Problemas Encontrados
+
+## Metas Iniciais
+próximo paciente /// checar se a fila prioridade está vazia , se estive puxar um paciente da fila normal
+selecionar cache /// ao puxar um paciente se procura um cache vazio para ele
+
+ideia geral
+gerar tempo do cache /// definir se o tempo de atendimento é fixo por cache e se muda entre eles
+gerar paciente // decidir se os pacientes serão criados com o tempo
