@@ -21,3 +21,5 @@ selecionar cache /// ao puxar um paciente se procura um cache vazio para ele
 ideia geral
 gerar tempo do cache /// definir se o tempo de atendimento é fixo por cache e se muda entre eles
 gerar paciente // decidir se os pacientes serão criados com o tempo
+
+Criar uma forma de na variável "dado" da fila ter o nome dos pacientes, ter uma forma de escolher alternadamente os pacientes da fila normal e preferencial e guardar o nome deles nos guichês, que serão um vetor com 3 espaços (essa última parte é bem fácil pq a função "Get" já retira o paciente da fila e retorna a variável "dado" que vai ser o nome do paciente)
