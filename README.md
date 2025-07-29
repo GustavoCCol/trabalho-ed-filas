@@ -15,7 +15,8 @@ Descrição: Simula laboratório com fila única e múltiplos atendentes, inclui
   - Manoel fez os ajustes para resolver o problema do scanf. Anteriormente, achamos ter resolvido isso, mas não foi o caso. Ele mudou as variáveis de escolha para "getch" ao invés de "scanf" para evitar que o usuário escreva mais do que deveria. O switch case da função "Escolha _menu" agora chama funções, para deixar o código mais organizado.
   - Júlio postou o código atualizado com alguns ajustes e refinamentos finais. Ainda há dúvidas sobre as funções criar fila e terminar fila, uma vez que, como é um guichê fixo de laboratório, não há razão para se criar filas ou encerrar filas, se uma fila ficar vazia, não tem problema, mas é necessário que ela ao menos exista.
   - Foi decidido tirar as funções criar fila e encerrar fila, deixando o código mais enxuto e direto, com as funções de adicionar paciente, chamar paciente, remover paciente, mostrar guichê e encerrar sessão.
-    
+  - Após finalizado o código, adaptamos o raylib.h para sua versão final. Percebemos depois que foi feito fila normal e preferencial, sendo que o objetivo era apenas de uma fila única, que era o que estava sendo feito no frontend da interface, contudo, deixamos essas linhas, já que o frontend é que vai decidir o que usar do código do backend. Alguns pequenos ajustes foram feitos no código do frontend para melhorar a interface e o menu.
+  
 ## Membros do grupo
 - Manoel Pedro
 - Júlio Pereira
@@ -24,10 +25,7 @@ Descrição: Simula laboratório com fila única e múltiplos atendentes, inclui
 - Udson Marçal  
 
 ## Problemas Encontrados
-- Novamente, nosso problema ainda é a mescla do código com o arquivo raylib, mas dessa vez é o problema principal.
+- Resolvidos.
 
 ## Metas Iniciais
-- Fazer a fusão do código em C com a interface no RAYLIB.
-- Não é relacionado com o código, mas o objetivo agora é ajustar os slides para a apresentação do trabalho.
-- Baseado no feedback do professor sobre as apresentações anteriores, estamos pensando em fazer o diagrama para melhor visualização do pensamento e progresso do código.
-- Resolver os problemas encontrados.
+- Finalizar os slides.
