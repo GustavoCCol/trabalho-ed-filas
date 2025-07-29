@@ -191,9 +191,8 @@ bool Menu(){
     printf("\n1 - Adicionar paciente");
     printf("\n2 - Chamar paciente");
     printf("\n3 - Liberar paciente");
-    printf("\n4 - Encerrar fila");
-    printf("\n5 - Exibir guichês");
-    printf("\n6 - Encerrar sessão\n");
+    printf("\n4 - Exibir guichês");
+    printf("\n5 - Encerrar sessão\n");
     printf("\nEscolha: ");
     escolha = getch();
     clrscr();
@@ -215,13 +214,10 @@ bool Escolha_Menu(char escolha){
             Liberar_paciente();
             break;
         case '4':
-            Encerrar_fila();
-            break;
-        case '5':
             Fila_dump(&guiche);
             sleep(2);
             break;
-        case '6':
+        case '5':
             return false;
         default:
             printf("\nOpção inválida, tente novamente\n");
@@ -360,31 +356,6 @@ void Liberar_paciente(){
     if(result == true){
         printf("\nPaciente liberado: ");
         puts(data);
-        sleep(2);
-    }
-}
-
-void Encerrar_fila(){
-    bool result;
-    char escolha_fila;
-    char data[50];
-    printf("\nEscolha a fila a ser encerrada");
-    printf("\n1 - fila normal\n2 - fila preferencial");
-    printf("\nEscolha: ");
-    escolha_fila = getch();
-    clrscr();
-    if(escolha_fila == '1'){
-        Fila_destroy(&fila_normal);
-        printf("\nFila encerrada com sucesso.\n");
-        sleep(2);
-    }
-    else if(escolha_fila == '2'){
-        Fila_destroy(&fila_preferencial);
-        printf("\nFila encerrada com sucesso.\n");
-        sleep(2);
-    }
-    else{
-        printf("\nOpção inválida, tente novamemte\n");
         sleep(2);
     }
 }
