@@ -22,7 +22,7 @@ TFila fila_preferencial;
 char fila_next; //Determina o tipo de paciente a ser chamado, 1 para preferencial, 2 para normal
 char n_filas_normais = 0;//Quantidade de filas normais criadas
 char n_filas_preferenciais = 0;//Quantidade de filas preferenciais criadas
-char guiche[TAM_GUICHE][20];//guiche onde os pacientes serão atendidos
+TFila guiche;//guiche onde os pacientes serão atendidos
 bool isPreferencial;//determina se o próximo paciente a ser chamado será preferencial
 
 bool Fila_create(TFila *fila, char sizeElement, int max, bool preferencial);
@@ -181,10 +181,7 @@ void Fila_dump(TFila *fila){
 }
 
 void Iniciar_Guiche(){
-    int i;
-    for(i = 0; i < TAM_GUICHE; i++){
-        guiche[i][0] = '\0'; // define string vazia
-    }
+    Fila_create(&guiche, sizeof(char)*20, TAM_GUICHE, false);
 }
 
 bool Menu(){
@@ -212,7 +209,7 @@ bool Menu(){
 bool Escolha_Menu(char escolha){
     bool result;
     char escolha_fila;
-    char data[20];
+    char data[50];
     int i, contador = 0;
     
     switch(escolha){
@@ -287,7 +284,7 @@ bool Escolha_Menu(char escolha){
                     break;
                 }
                 printf("\nDiga o nome do paciente: ");
-                scanf(" %19s", data);
+                gets(data);
                 result = Fila_put(&fila_normal, data);
                 clrscr();
                 if(result == true){
@@ -311,7 +308,7 @@ bool Escolha_Menu(char escolha){
                     break;
                 }
                 printf("\nDiga o nome do paciente: ");
-                scanf(" %19s", data);
+                gets(data);
                 result = Fila_put(&fila_preferencial, data);
                 clrscr();
                 if(result == true){
@@ -334,17 +331,10 @@ bool Escolha_Menu(char escolha){
             break;
         case '3':
             // Verifica se todos os guichês estão ocupados
-            for(i = 0; i < TAM_GUICHE; i++){
-                if (guiche[i][0] == '\0') {
-                    break;
-                }
-            }
-            if (i == TAM_GUICHE) {
-                printf("\nGuichê cheio.\n");
-                sleep(2);
+            if(guiche.size == TAM_GUICHE){
+                printf("\nTodos os guichês estão ocupados.\n");
                 break;
             }
-
             if(n_filas_normais == 0 && n_filas_preferenciais == 0){
                 printf("\nNão há filas para se chamar pacientes, crie uma fila para prosseguir.\n");
                 sleep(2);
@@ -362,58 +352,56 @@ bool Escolha_Menu(char escolha){
                 break;
             }
             if(isPreferencial == true){
-                for(i = 0; i < TAM_GUICHE; i++){
-                    if (guiche[i][0] == '\0'){
-                        result = Fila_get(&fila_preferencial, guiche[i]);
-                        break;
+                result = Fila_get(&fila_preferencial, &data);
+                if(result == true){
+                    result = Fila_put(&guiche, &data);
+                    if(result == true){
+                        printf("\nPaciente chamado com sucesso.\n");
+                        sleep(2);
+                        isPreferencial = false;
+                    }
+                    else{
+                        printf("\nNão foi possível chamar o paciente, tente novamente.\n");
+                        sleep(2);
                     }
                 }
-                if(result == true){
-                    printf("\nPaciente chamado com sucesso.\n");
-                    sleep(2);
-                    isPreferencial = false;
-                }
                 else{
-                    printf("\nGuichê cheio.\n");
+                    printf("\nNão foi possível chamar o paciente, tente novamente.\n");
                     sleep(2);
                 }
             }
             else{
-                for(i = 0; i < TAM_GUICHE; i++){
-                    if (guiche[i][0] == '\0'){
-                        result = Fila_get(&fila_normal, guiche[i]);
-                        break;
+                result = Fila_get(&fila_normal, &data);
+                 if(result == true){
+                    result = Fila_put(&guiche, &data);
+                    if(result == true){
+                        printf("\nPaciente chamado com sucesso.\n");
+                        sleep(2);
+                        isPreferencial = false;
+                    }
+                    else{
+                        printf("\nNão foi possível chamar o paciente, tente novamente.\n");
+                        sleep(2);
                     }
                 }
-                if(result == true){
-                    printf("\nPaciente chamado com sucesso\n");
-                    sleep(2);
-                    isPreferencial = true;
-                }
                 else{
-                    printf("\nGuichê cheio.\n");
+                    printf("\nNão foi possível chamar o paciente, tente novamente.\n");
                     sleep(2);
                 }
             }
             break;
         case '4':
-            for(i = 0; i < TAM_GUICHE; i++){
-                if (guiche[i][0] == '\0'){
-                    contador++;
-                }
-            }
-            if(contador == TAM_GUICHE){
+            if(guiche.size == 0){
                 printf("\nNão há pacientes para serem liberados\n");
                 sleep(2);
                 break;
             }
-            for(i = 0; i < TAM_GUICHE; i++){
-                if(strlen(guiche[i]) > 0){
-                    printf("\nO paciente %s, do guichê %d foi liberado\n", guiche[i], i + 1);
-                    guiche[i][0] = '\0'; // limpa a string
-                    sleep(2);
-                    break;
-                }
+            result = Fila_get(&guiche, &data);
+            if(result == true){
+                printf("\nO paciente: ");
+                puts(data);
+                printf(" foi liberado");
+                sleep(2);
             }
             break;
         case '5':
@@ -455,12 +443,12 @@ bool Escolha_Menu(char escolha){
             }
             break;
         case '6':
-            for(i = 0; i <= TAM_GUICHE; i++){
+            /*for(i = 0; i <= TAM_GUICHE; i++){
                 if (strlen(guiche[i]) > 0)
                     printf("\nGuichê %d: %s", i + 1, guiche[i]);
                 else
                     printf("\nGuichê %d: [vazio]", i + 1);
-            }
+            }*/
             sleep(2);
             break;
         case '7':
