@@ -45,6 +45,10 @@ void Encerrar_fila();
        printf("\x1b[2J");
 }*/
 
+void clrscr() {
+    system("cls");
+}
+
 int main(){
     bool continuar = true;
     
@@ -159,18 +163,15 @@ int Fila_size(TFila *fila){
 }
 
 void Fila_dump(TFila *fila){
-    char *current,*j;
+    char *current;
     int i;
-    
+
     current = fila->first;
-    for( i =0; i< fila->size;i++){
-        printf("Elemento [%d]\n",i);
-        for(j=current; j < current + fila->sizeElement;j++){
-            printf("%04x : %02x\n",j,(*j));
-        }
+    for (i = 0; i < fila->size; i++) {
+        printf("Guichê %d:\n %s\n", i+1, current);
         current += fila->sizeElement;
-        if(current>= fila->buffer + fila->maxElement*fila->sizeElement)
-           current = fila->buffer;
+        if (current >= fila->buffer + fila->maxElement * fila->sizeElement)
+            current = fila->buffer;
         printf("-----------------------\n");
     }
 }
@@ -226,7 +227,6 @@ bool Escolha_Menu(char escolha){
             printf("\nOpção inválida, tente novamente\n");
             sleep(2);
     }
-    
     return true;
 }
 void Adicionar_paciente(){
@@ -291,60 +291,60 @@ void Chamar_paciente(){
     bool result;
     char escolha_fila;
     char data[50];
-            // Verifica se todos os guichês estão ocupados
-            if(guiche.size == TAM_GUICHE){
-                printf("\nTodos os guichês estão ocupados.\n");
-                return;
-            }
-            if(fila_preferencial.size == 0 && fila_normal.size != 0){
+    // Verifica se todos os guichês estão ocupados
+    if(guiche.size == TAM_GUICHE){
+        printf("\nTodos os guichês estão ocupados.\n");
+        return;
+    }
+    if(fila_preferencial.size == 0 && fila_normal.size != 0){
+        isPreferencial = false;
+    }
+    if(fila_preferencial.size != 0 && fila_normal.size == 0){
+        isPreferencial = true;
+    }
+    if(fila_preferencial.size == 0 && fila_normal.size == 0){
+        printf("\nNão há pacientes para serem chamados.\n");
+        sleep(2);
+        return;
+    }
+    if(isPreferencial == true){
+        result = Fila_get(&fila_preferencial, &data);
+        if(result == true){
+            result = Fila_put(&guiche, &data);
+            if(result == true){
+                printf("\nPaciente chamado com sucesso.\n");
+                sleep(2);
                 isPreferencial = false;
             }
-            if(fila_preferencial.size != 0 && fila_normal.size == 0){
-                isPreferencial = true;
-            }
-            if(fila_preferencial.size == 0 && fila_normal.size == 0){
-                printf("\nNão há pacientes para serem chamados.\n");
+            else{
+                printf("\nNão foi possível chamar o paciente, tente novamente.\n");
                 sleep(2);
-                return;
             }
-            if(isPreferencial == true){
-                result = Fila_get(&fila_preferencial, &data);
-                if(result == true){
-                    result = Fila_put(&guiche, &data);
-                    if(result == true){
-                        printf("\nPaciente chamado com sucesso.\n");
-                        sleep(2);
-                        isPreferencial = false;
-                    }
-                    else{
-                        printf("\nNão foi possível chamar o paciente, tente novamente.\n");
-                        sleep(2);
-                    }
-                }
-                else{
-                    printf("\nNão foi possível chamar o paciente, tente novamente.\n");
-                    sleep(2);
-                }
+        }
+        else{
+            printf("\nNão foi possível chamar o paciente, tente novamente.\n");
+            sleep(2);
+        }
+    }
+    else{
+        result = Fila_get(&fila_normal, &data);
+        if(result == true){
+            result = Fila_put(&guiche, &data);
+            if(result == true){
+                printf("\nPaciente chamado com sucesso.\n");
+                sleep(2);
+                isPreferencial = false;
             }
             else{
-                result = Fila_get(&fila_normal, &data);
-                if(result == true){
-                    result = Fila_put(&guiche, &data);
-                    if(result == true){
-                        printf("\nPaciente chamado com sucesso.\n");
-                        sleep(2);
-                        isPreferencial = false;
-                    }
-                    else{
-                        printf("\nNão foi possível chamar o paciente, tente novamente.\n");
-                        sleep(2);
-                    }
-                }
-                else{
-                    printf("\nNão foi possível chamar o paciente, tente novamente.\n");
-                    sleep(2);
-                }
+                printf("\nNão foi possível chamar o paciente, tente novamente.\n");
+                sleep(2);
             }
+        }
+        else{
+            printf("\nNão foi possível chamar o paciente, tente novamente.\n");
+            sleep(2);
+        }
+    }
 }
 
 void Liberar_paciente(){
@@ -368,23 +368,23 @@ void Encerrar_fila(){
     bool result;
     char escolha_fila;
     char data[50];
-            printf("\nEscolha a fila a ser encerrada");
-            printf("\n1 - fila normal\n2 - fila preferencial");
-            printf("\nEscolha: ");
-            escolha_fila = getch();
-            clrscr();
-            if(escolha_fila == '1'){
-                Fila_destroy(&fila_normal);
-                printf("\nFila encerrada com sucesso.\n");
-                sleep(2);
-            }
-            else if(escolha_fila == '2'){
-                Fila_destroy(&fila_preferencial);
-                printf("\nFila encerrada com sucesso.\n");
-                sleep(2);
-            }
-            else{
-                printf("\nOpção inválida, tente novamemte\n");
-                sleep(2);
-            }
+    printf("\nEscolha a fila a ser encerrada");
+    printf("\n1 - fila normal\n2 - fila preferencial");
+    printf("\nEscolha: ");
+    escolha_fila = getch();
+    clrscr();
+    if(escolha_fila == '1'){
+        Fila_destroy(&fila_normal);
+        printf("\nFila encerrada com sucesso.\n");
+        sleep(2);
+    }
+    else if(escolha_fila == '2'){
+        Fila_destroy(&fila_preferencial);
+        printf("\nFila encerrada com sucesso.\n");
+        sleep(2);
+    }
+    else{
+        printf("\nOpção inválida, tente novamemte\n");
+        sleep(2);
+    }
 }
