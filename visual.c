@@ -32,9 +32,9 @@ float COMECAR_X = 350.0f;
 float COMECAR_Y = 200.0f;
 float andar = 5.0f;
 float limitey = 100.0f;
-float tempo_at1 = 5.0f; 
-float tempo_at2 = 7.5f;  
-float tempo_at3 = 10.5f;  
+float tempo_at1 = 4.5f; 
+float tempo_at2 = 5.0f;  
+float tempo_at3 = 6.0f;  
 
 int guiches[4] = {0, 0, 0, 0};
 
@@ -106,7 +106,7 @@ int main(void) {
     guiches[2] = 0; 
     guiches[3] = 0; 
 
-    int batata = 0; 
+    int batata = 1; 
     char inputName[MAX_NAME_LENGTH + 1] = "\0"; 
     int letterCount = 0; 
 
@@ -114,7 +114,7 @@ int main(void) {
     Rectangle buttonRect1 = {5.0f, 35.0f, 95, 30};
     Rectangle buttonRect2 = {255.0f, 35.0f, 100, 30};
     Rectangle buttonRect3 = {505.0f, 35.0f, 100, 30};
-    Rectangle buttonRect4 = {505.0f, 262.5f, 150, 30};
+    Rectangle buttonRect4 = {505.0f, 287.5f, 150, 30};
 
     Rectangle ate1 = {0.0f, 0.0f, 225, 90};
     Rectangle ate2 = {250.0f, 0.0f, 225, 90};
@@ -155,7 +155,7 @@ int main(void) {
     Paciente pacientesParaMover[MAX_MOVING_PATIENTS];
     int numPacientesParaMover = 0;
 
-  /*
+  
     Paciente novop_init;
     snprintf(novop_init.name, sizeof(novop_init.name), "Dante"); novop_init.x=0; novop_init.y=0; novop_init.moveType=0; novop_init.moveTimer=0; novop_init.atend=0;
     Fila_put(&filaPacientes, (char*)&novop_init);
@@ -168,11 +168,11 @@ int main(void) {
     snprintf(novop_init.name, sizeof(novop_init.name), "Manoel"); novop_init.x=0; novop_init.y=0; novop_init.moveType=0; novop_init.moveTimer=0; novop_init.atend=0;
     Fila_put(&filaPacientes, (char*)&novop_init);
     snprintf(novop_init.name, sizeof(novop_init.name), "Gustavo"); novop_init.x=0; novop_init.y=0; novop_init.moveType=0; novop_init.moveTimer=0; novop_init.atend=0;
-    Fila_put(&filaPacientes, (char*)&novop_init);*/
+    Fila_put(&filaPacientes, (char*)&novop_init);
 
-    float filay = 300.0f; 
+    float filay = 325.0f; 
     float espacox = 20.0f; 
-    float comecox = 50.0f; 
+    float comecox = 2.0f; 
 
     while (!WindowShouldClose()) {
         if(IsKeyPressed(KEY_F11)) {   
@@ -184,7 +184,7 @@ int main(void) {
 
         if (batata == 0) { 
             if(Fila_isFull(&filaPacientes)==true){
-                DrawText(cheio,(screenWidth)/3,(screenHeight)/2,5,GRAY);
+                //DrawText(cheio,((screenWidth)/3)-25,(screenHeight)/2,5,BLACK);
             }
 
             int key = GetCharPressed();
@@ -216,13 +216,19 @@ int main(void) {
                         novop.moveType = 0; 
                         novop.moveTimer = 0.0f;
                         Fila_put(&filaPacientes, (char*)&novop);
-                    } 
+                    }else{
+                        batata=1;
+                        
+                    }
                 }
-
                 letterCount = 0;
                 memset(inputName, 0, sizeof(inputName));
+                
             }
         } else if (batata == 1) { 
+            if(Fila_isFull(&filaPacientes)==true){
+                DrawText(cheio,((screenWidth)/3)-15,filay-27.5f ,5,BLACK);
+            }
 
           
             if (CheckCollisionPointRec(mousePoint, buttonRect4) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -345,7 +351,7 @@ int main(void) {
 
                ///NOMES
             DrawRectangleRec(menuButtonSimulation, LIGHTGRAY);
-            DrawText("Iniciar Simulacao", menuButtonSimulation.x + (menuButtonSimulation.width - MeasureText("Iniciar Simulacao", 20)) / 2,
+            DrawText("Voltar para o Guichê", menuButtonSimulation.x + (menuButtonSimulation.width - MeasureText("Voltar para o Guichê", 20)) / 2,
                      menuButtonSimulation.y + (menuButtonSimulation.height - 20) / 2, 20, BLACK);
 
     
@@ -402,7 +408,7 @@ int main(void) {
                 if (Fila_peek_at(&filaPacientes, i, (char*)&filado)) {
                     float patientDrawX = currentX + (i * (espacox + (pessoa.width * textureScaleFactor)));
                     DrawTextureEx(pessoa, (Vector2){patientDrawX, filay}, 0.0f, textureScaleFactor, WHITE);
-                    DrawText(filado.name, patientDrawX, filay + (pessoa.height * textureScaleFactor) + 5, 15, BLACK);
+                    DrawText(filado.name, patientDrawX, filay + (pessoa.height * textureScaleFactor) + 5, 15, GREEN);
                 }
             }
             ///fila img
@@ -414,7 +420,7 @@ int main(void) {
                 DrawText(pacientesParaMover[i].name,
                          pacientesParaMover[i].x + (pessoa.width * textureScaleFactor / 2) - (nameWidth / 2),
                          pacientesParaMover[i].y + (pessoa.height * textureScaleFactor) ,
-                         15, BLUE);
+                         15, RED);
 
                 if (pacientesParaMover[i].moveType != 0) {
                     DrawText(TextFormat("%.1f / %.1f", pacientesParaMover[i].moveTimer, pacientesParaMover[i].atend),
@@ -424,9 +430,9 @@ int main(void) {
             ///atend++timer
 
  
-            DrawText(TextFormat("Guiche 1: %s", guiches[1] == 0 ? "Livre" : "Ocupado"), 0, 90, 5, BLACK);
-            DrawText(TextFormat("Guiche 2: %s", guiches[2] == 0 ? "Livre" : "Ocupado"), 250, 90, 5, BLACK);
-            DrawText(TextFormat("Guiche 3: %s", guiches[3] == 0 ? "Livre" : "Ocupado"), 500, 90, 5, BLACK);
+        DrawText(TextFormat("Guiche 1: %s", guiches[1] == 0 ? "Livre" : "Ocupado"), 0, 90, 5,guiches[1]==0 ? GREEN : RED);
+            DrawText(TextFormat("Guiche 2: %s", guiches[2] == 0 ? "Livre" : "Ocupado"), 250, 90, 5,guiches[2]== 0 ? GREEN : RED);
+            DrawText(TextFormat("Guiche 3: %s", guiches[3] == 0 ? "Livre" : "Ocupado"), 500, 90, 5,guiches[3]==0?GREEN: RED);
         }
 
         EndDrawing();
