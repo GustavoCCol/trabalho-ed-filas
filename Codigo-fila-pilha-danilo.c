@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define TAM 15
-
+#define TAM_GUICHE 3
 
 typedef struct tagFila {
     char    *buffer;// Buffer para guardar os elementos
@@ -21,6 +21,8 @@ TFila fila_preferencial;
 char fila_next; //Determina o tipo de paciente a ser chamado, 1 para preferencial, 2 para normal
 char n_filas_normais = 0;//Quantidade de filas normais criadas
 char n_filas_preferenciais = 0;//Quantidade de filas preferenciais criadas
+int guiche[TAM_GUICHE];//guiche onde os pacientes serão atendidos
+bool isPreferencial;//determina se o próximo paciente a ser chamado será preferencial
 
 bool Fila_create(TFila *fila, int sizeElement, int max, bool preferencial);
 void Fila_destroy(TFila *fila);
@@ -29,12 +31,14 @@ bool Fila_get(TFila *fila,char *data);
 bool Fila_isEmpty(TFila *fila);
 bool Fila_isFull(TFila *fila);
 int Fila_size(TFila *fila);
+void Iniciar_Guiche();
 bool Menu();
 bool EscolherNomeDessaFuncaoDepois(char escolha);
 
 int main(){
     bool continuar = true;
     
+    Iniciar_Guiche();
     while(continuar == true){
         continuar = Menu();
     }
@@ -62,7 +66,6 @@ bool Fila_create(TFila *fila, int sizeElement, int max, bool preferencial){
     fila->maxElement = max;
     fila->first = fila->buffer;
     fila->last  = fila->buffer;
-    fila->size = 0;
     fila->preferencial = preferencial;
    
     return true;
@@ -170,17 +173,26 @@ void Fila_dump(TFila *fila){
     }
 }
 
+void Iniciar_Guiche(){
+    int i;
+    
+    for(i = 0; i < TAM_GUICHE; i++){
+        guiche[i] = 0;
+    }
+}
+
 bool Menu(){
     char escolha;
     bool continuar;
     
-    printf("Escolha uma opção:\n");
+    printf("\nEscolha uma opção:\n");
     printf("\n1 - Criar fila");
     printf("\n2 - Adicionar paciente");
     printf("\n3 - Chamar paciente");
     printf("\n4 - liberar paciente");
     printf("\n5 - encerrar fila");
-    printf("\n6 - encerrar sessão\n");
+    printf("\n6 - exibir guichês");
+    printf("\n7 - encerrar sessão\n");
     printf("\nEscolha: ");
     scanf(" %c", &escolha);
     
@@ -193,6 +205,7 @@ bool EscolherNomeDessaFuncaoDepois(char escolha){
     bool result;
     char escolha_fila;
     char data = 1; //variável temporária apenas para testar o put e o get das filas
+    int i, contador = 0;
     
     switch(escolha){
         case '1':
@@ -236,12 +249,20 @@ bool EscolherNomeDessaFuncaoDepois(char escolha){
             }
             break;
         case '2':
+            if(n_filas_normais == 0 && n_filas_preferenciais == 0){
+                printf("\nNão há filas para se adicionar pacientes, crie uma fila para prosseguir.\n");
+                break;
+            }        
             printf("\nEscolha o tipo de fila para adicionar o paciente");
             printf("\n1 - normal\n2 - preferencial\n");
             printf("\nEscolha: ");
             scanf(" %d", &escolha_fila);
             if(escolha_fila == 1){
-                if(fila_normal.maxElement == 15){
+                if(n_filas_normais == 0){
+                    printf("\nNão há uma fila normal, crie uma fila antes de prosseguir.\n");
+                    break;
+                }
+                if(fila_normal.size == 15){
                     printf("\nA fila está cheia, não é possível adicionar pacientes.\n");
                     break;
                 }
@@ -254,22 +275,92 @@ bool EscolherNomeDessaFuncaoDepois(char escolha){
                 }
             }
             else if(escolha_fila == 2){
-                if(fila_preferencial.maxElement == 15){
+                if(n_filas_preferenciais == 0){
+                    printf("\nNão há uma fila preferencial, crie uma fila antes de prosseguir.\n");
+                    break;
+                }
+                if(fila_preferencial.size == 15){
                     printf("\nA fila está cheia, não é possível adicionar pacientes.\n");
                     break;
                 }
                 result = Fila_put(&fila_preferencial, &data);
                 if(result == true){
                     printf("\nPaciente adicionado com sucesso.\n");
+                    if(fila_preferencial.size == 1){
+                        isPreferencial = true;
+                    }
                 }
                 else{
                     printf("\nErro ao adicionar paciente, tente novamente\n");
                 }
             }
+            else{
+                printf("\nOpção inválida, tente novamente\n");
+            }
             break;
         case '3':
+            if(n_filas_normais == 0 && n_filas_preferenciais == 0){
+                printf("\nNão há filas para se chamar pacientes, crie uma fila para prosseguir.\n");
+                break;
+            }        
+            if(fila_preferencial.size == 0 && fila_normal.size != 0){
+                isPreferencial = false;
+            }
+            if(fila_preferencial.size != 0 && fila_normal.size == 0){
+                isPreferencial = true;
+            }
+            if(fila_preferencial.size == 0 && fila_normal.size == 0){
+                printf("\nNão há pacientes para serem chamados.\n");
+                break;
+            }
+            if(isPreferencial == true){
+                for(i = 0; i < TAM_GUICHE; i++){
+                    if(guiche[i] == 0){
+                        result = Fila_get(&fila_preferencial, &guiche[i]);
+                        break;
+                    }
+                }
+                if(result == true){
+                    printf("\nPaciente chamado com sucesso\n");
+                    isPreferencial = false;
+                }
+                else{
+                    printf("\nErro ao chamar paciente, tente novamente\n");
+                }
+            }
+            else{
+                for(i = 0; i < TAM_GUICHE; i++){
+                    if(guiche[i] == 0){
+                        result = Fila_get(&fila_normal, &guiche[i]);
+                        break;
+                    }
+                }
+                if(result == true){
+                    printf("\nPaciente chamado com sucesso\n");
+                    isPreferencial = true;
+                }
+                else{
+                    printf("\nErro ao chamar paciente, tente novamente\n");
+                }
+            }
             break;
         case '4':
+            for(i = 0; i < TAM_GUICHE; i++){
+                if(guiche[i] == 0){
+                    contador++;
+                }
+            }
+            if(contador == TAM_GUICHE){
+                printf("\nNão há pacientes para serem liberados\n");
+                break;
+            }
+            for(i = 0; i < TAM_GUICHE; i++){
+                if(guiche[i] != 0){
+                    printf("\nO paciente %d, do guichê %d foi liberado\n", guiche[i], i + 1);
+                    guiche[i] = 0;
+                    break;
+                }
+            }
             break;
         case '5':
             if(n_filas_normais == 0 && n_filas_preferenciais == 0){
@@ -303,6 +394,12 @@ bool EscolherNomeDessaFuncaoDepois(char escolha){
             }
             break;
         case '6':
+            for(i = 0; i < TAM_GUICHE; i++){
+                printf("\nGuiche %d: %d", i + 1, guiche[i]);
+            }    
+            printf("\n"); //para não atrapalhar os outros prints
+            break;
+        case '7':
             return false;
         default:
             printf("\nOpção inválida, tente novamente\n");
