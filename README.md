@@ -2,6 +2,9 @@
 "Gerenciamento de Fila com Múltiplos Atendentes"\
 Descrição: Simula laboratório com fila única e múltiplos atendentes, inclui distribuição de atendimentos.
 
+# OBSERVAÇÃO
+  OBSERVAÇÃO AO PROFESSOR! COMO O INTEGRANTE MANOEL E JOÃO PAULO NÃO POSSUEM UM COMPUTADOR, A COMUNICAÇÃO FICOU ESTRITA POR WHATSAPP, ENTÃO NÃO FIZEMOS OS COMMITS NO GITHUB À MEDIDA QUE FORAM FEITAS AS MODIFIÇÕES, ENTÃO O ALUNO JÚLIO FEZ OS COMMITS TODOS SEQUENCIAIS NO DIA 29/07, EXPLICANDO AS CONVERSAS NO WHATSAPP E DEBATES OCORRIDOS, BEM COMO AS MUDANÇAS E LANÇANDO OS CÓDIGOS QUE FORAM SENDO FEITOS E ATUALIZANDO ELES NO GITHUB, COM AS DEVIDAS OBSERVAÇÕES. PORTANTO, HAVERÃO MAIS DE 15 COMMITS NO MESMO DIA E HORÁRIO, MAS SÃO EXPLICADOS POR CONTA DISSO.
+
 ## Mudanças
   - Inicialmente pegamos o código do professor de fila/pilha e em cima dele, começamos a fazer as modificações do código próprias, adaptando para o problema. Fizemos duas filas, uma normal e uma preferêncial.
   - Mais tardar, Udson iniciou os trabalhos com João Paulo usando a ferramente RAYLIB para fazer a interface do guichê. Foi postado o arquivo raylib.h e visual.c.
