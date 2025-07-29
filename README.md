@@ -8,6 +8,7 @@ Descrição: Simula laboratório com fila única e múltiplos atendentes, inclui
   - Manoel terminou de criar a função "EscolherNomeDessaFuncaoDepois" colocando nela a opção de chamar os pacientes pro guichê, liberá-los dos guichês e mostrar os guichês. Também criou o vetor dos guichês, definiu seu tamanho e criou uma função de inicialização.
   - Udson junto do João Paulo terminaram a interface do raylib, agora aparecendo os guichês com atendentes, botão de criar paciente, opção de poder colocar o paciente mais "recente" em termos de ter chegado primeiro, para ser atendido.
   - Júlio fez mudanças no código Fila_laboratorio.c para resolver a meta da variável dado ter o nome dos pacientes, colocou as funções "sleep" e "clear screen" para melhorar a visualização e deixar mais limpo o terminal.
+  - Manoel levantou uma boa sugestão para resolver o problema, usar getchar ou gets. Após alguns ajustes, Manoel e Júlio fizeram as devidas resoluções para os problemas encontrados. A solução para a questão da ordem de liberação foi fazer o guichê virar uma fila, ao invés de ser um vetor, como era antes, o que solucionava o fato pode um paciente entrar no guichê 2 e sair antes do paciente do guichê 3, mesmo tendo chegado antes.
     
 ## Membros do grupo
 Manoel Pedro  
@@ -17,7 +18,7 @@ Joao Paulo
 Udson Marçal  
 
 ## Problemas Encontrados
-Conseguir fazer nomes compostos aparecerem no guichê. Quando você libera paciêntes, ele libera por ordem de guiche, ou seja, primeiro o guiche 1, dps o 2 e dps o 3, e não por ordem de chegada, e quando você escreve na Escolha do switch 2asosnadsn4, se tiver o alguma opção válida no 1o caractere, ele aceita a resposta, e se tu escolher a opção de adicionar paciente com 2asodasod, ele aceita e logo dps escreve o nome do paciente como asodasod, então falta só isso pra ajeitar.
+O novo problema agora foi, agora que o código está praticamente finalizado, fazer a mescla com a interface feito no raylib, uma fez que inicialmente fizemos a interface pensando em ser algo isolado para ilustração, e agora queremos que sejam algo único.
 
 ## Metas Iniciais
-Resolver os problemas encontrados.
+Fazer a fusão do código em C com a interface no RAYLIB.
