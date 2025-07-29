@@ -10,6 +10,7 @@ Descrição: Simula laboratório com fila única e múltiplos atendentes, inclui
   - Júlio fez mudanças no código Fila_laboratorio.c para resolver a meta da variável dado ter o nome dos pacientes, colocou as funções "sleep" e "clear screen" para melhorar a visualização e deixar mais limpo o terminal.
   - Manoel levantou uma boa sugestão para resolver o problema, usar getchar ou gets. Após alguns ajustes, Manoel e Júlio fizeram as devidas resoluções para os problemas encontrados. A solução para a questão da ordem de liberação foi fazer o guichê virar uma fila, ao invés de ser um vetor, como era antes, o que solucionava o fato pode um paciente entrar no guichê 2 e sair antes do paciente do guichê 3, mesmo tendo chegado antes.
   - Manoel fez os ajustes para resolver o problema do scanf. Anteriormente, achamos ter resolvido isso, mas não foi o caso. Ele mudou as variáveis de escolha para "getch" ao invés de "scanf" para evitar que o usuário escreva mais do que deveria. O switch case da função "Escolha _menu" agora chama funções, para deixar o código mais organizado.
+  - Júlio postou o código atualizado com alguns ajustes e refinamentos finais. Ainda há dúvidas sobre as funções criar fila e terminar fila, uma vez que, como é um guichê fixo de laboratório, não há razão para se criar filas ou encerrar filas, se uma fila ficar vazia, não tem problema, mas é necessário que ela ao menos exista.
     
 ## Membros do grupo
 Manoel Pedro  
@@ -19,7 +20,7 @@ Joao Paulo
 Udson Marçal  
 
 ## Problemas Encontrados
-Falta: organizar a função "Fila_dump" para poder mostrar o guichê direitinho, criar uma opção de "Reabrir fila" para caso o usuário queira abrir uma fila encerrada e organizar indentação de algumas das últimas funções.
+Decidir a questão das criações e encerramentos de filas no código.
 
 ## Metas Iniciais
 Fazer a fusão do código em C com a interface no RAYLIB.
