@@ -1623,6 +1623,7 @@ char* TruncateText(const char* text, int fontSize, int maxWidth) {
 #include <conio.h>
 #include <string.h>
 
+#define TYPE_FILA 2
 #define TAM 15
 #define TAM_GUICHE 3
 
