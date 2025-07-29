@@ -6,7 +6,17 @@
 
 #define MAX_MOVING_PATIENTS 3
 #define MAX_NAME_LENGTH 15 
-
+void ToggleFullscreenWindow(int width,int height){
+    if(!IsWindowFullscreen()){
+        int monitor=GetCurrentMonitor();
+        SetWindowSize(GetMonitorWidth(monitor),GetMonitorHeight(monitor));
+        ToggleFullscreen();
+    }
+    else{
+        ToggleFullscreen();
+        SetWindowSize(width,height);
+    }
+}
 
 typedef struct {
     char name[15];
@@ -110,9 +120,10 @@ int main(void) {
     Rectangle ate2 = {250.0f, 0.0f, 225, 90};
     Rectangle ate3 = {500.0f, 0.0f, 225, 90};
         ///menu
-    Rectangle menuButtonSimulation = {300.0f, 300.0f, 200, 50};
-    Rectangle menuButtonAddPatient = {300.0f, 150.0f, 200, 50};
-    Rectangle nameInputBox = {300.0f, 100.0f, 200, 50};
+    Rectangle menuButtonSimulation = {250.0f, 300.0f, 225, 50};
+    Rectangle menuButtonAddPatient = {250.0f, 150.0f, 225, 50};
+    Rectangle nameInputBox = {250.0f, 100.0f, 225, 50};
+    
         ///menu
     ///retangulos
 
@@ -121,7 +132,9 @@ int main(void) {
     const char *buttonText2 = "Cache2";
     const char *buttonText3 = "Cache3";
     const char *buttonText4 = "Novo Paciente"; //SIMUAC
-    const char *buttonTextAddPatientMenu = "Adicionar Paciente"; //MENU
+    const char *buttonTextAddPatientMenu = "confirmar";
+    const char *cheio = "fila cheia,não é possivel adicionar mais pacientes";
+    //MENU
     ///botoes
 
     Color buttonColor = LIGHTGRAY;
@@ -162,10 +175,17 @@ int main(void) {
     float comecox = 50.0f; 
 
     while (!WindowShouldClose()) {
+        if(IsKeyPressed(KEY_F11)) {   
+        //ToggleFullscreenWindow(screenWidth,screenHeight);
+        ToggleFullscreen();
+        }
         Vector2 mousePoint = GetMousePosition();
 
 
         if (batata == 0) { 
+            if(Fila_isFull(&filaPacientes)==true){
+                DrawText(cheio,(screenWidth)/3,(screenHeight)/2,5,GRAY);
+            }
 
             int key = GetCharPressed();
             while (key > 0) {
@@ -185,7 +205,7 @@ int main(void) {
             if (CheckCollisionPointRec(mousePoint, menuButtonSimulation) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 batata= 1; 
             }
-            if (CheckCollisionPointRec(mousePoint, menuButtonAddPatient) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            if (CheckCollisionPointRec(mousePoint, menuButtonAddPatient) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)||IsKeyPressed(KEY_ENTER)) {
                 if (letterCount > 0) { 
                     if (!Fila_isFull(&filaPacientes)) {
                         Paciente novop;
@@ -207,15 +227,7 @@ int main(void) {
           
             if (CheckCollisionPointRec(mousePoint, buttonRect4) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 if (!Fila_isFull(&filaPacientes)) {
-                    Paciente novop;
-                    snprintf(novop.name, sizeof(novop.name), "P%d", Fila_size(&filaPacientes) + 1);
-                    novop.x = 0.0f; 
-                    novop.y = 0.0f;
-                    novop.moveType = 0; 
-                    novop.moveTimer = 0.0f;
-                    Fila_put(&filaPacientes, (char*)&novop);
-
-                    
+                    batata=0; 
                 }     
             }
 
@@ -325,8 +337,10 @@ int main(void) {
 
         BeginDrawing();
         ClearBackground((Color){255, 255, 255, 255}); 
+        
 
         if (batata == 0) {
+            
 
 
                ///NOMES
@@ -335,7 +349,7 @@ int main(void) {
                      menuButtonSimulation.y + (menuButtonSimulation.height - 20) / 2, 20, BLACK);
 
     
-            DrawText("Nome do Paciente:", screenWidth / 2 - MeasureText("Nome do Paciente:", 20) / 2, nameInputBox.y - 25, 20, BLACK);
+            DrawText("Nome do Paciente:", screenWidth/3  , nameInputBox.y - 25, 20, BLACK);
             DrawRectangleRec(nameInputBox, LIGHTGRAY);
             DrawRectangleLines((int)nameInputBox.x, (int)nameInputBox.y, (int)nameInputBox.width, (int)nameInputBox.height, BLACK);
             DrawText(inputName, (int)nameInputBox.x + 5, (int)nameInputBox.y + 10, 20, BLACK);
