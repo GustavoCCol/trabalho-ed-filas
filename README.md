@@ -17,17 +17,17 @@ Descrição: Simula laboratório com fila única e múltiplos atendentes, inclui
   - Foi decidido tirar as funções criar fila e encerrar fila, deixando o código mais enxuto e direto, com as funções de adicionar paciente, chamar paciente, remover paciente, mostrar guichê e encerrar sessão.
     
 ## Membros do grupo
-Manoel Pedro  
-Julio Pereira  
-Gustavo Cavalcante  
-Joao Paulo  
-Udson Marçal  
+- Manoel Pedro
+- Júlio Pereira
+- Gustavo Cavalcante
+- João Paulo
+- Udson Marçal  
 
 ## Problemas Encontrados
-Novamente, nosso problema ainda é a mescla do código com o arquivo raylib, mas dessa vez é o problema principal.
+- Novamente, nosso problema ainda é a mescla do código com o arquivo raylib, mas dessa vez é o problema principal.
 
 ## Metas Iniciais
-Fazer a fusão do código em C com a interface no RAYLIB.
-Não é relacionado com o código, mas o objetivo agora é ajustar os slides para a apresentação do trabalho.
-Baseado no feedback do professor sobre as apresentações anteriores, estamos pensando em fazer o diagrama para melhor visualização do pensamento e progresso do código.
-Resolver os problemas encontrados.
+- Fazer a fusão do código em C com a interface no RAYLIB.
+- Não é relacionado com o código, mas o objetivo agora é ajustar os slides para a apresentação do trabalho.
+- Baseado no feedback do professor sobre as apresentações anteriores, estamos pensando em fazer o diagrama para melhor visualização do pensamento e progresso do código.
+- Resolver os problemas encontrados.
