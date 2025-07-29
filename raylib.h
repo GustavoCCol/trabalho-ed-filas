@@ -1668,18 +1668,7 @@ void clrscr() {
     system("cls");
 }
 
-int main(){
-    bool continuar = true;
-    
-    Iniciar_filas();
-    while(continuar == true){
-        continuar = Menu();
-    }
-    
-    printf("\nSessão encerrada, adeus.\n");
-    
-    return 0;
-}
+
 
 bool Fila_create(TFila *fila, char sizeElement, int max){
     // verifica se paramentros da funçao sao validos
@@ -1977,6 +1966,31 @@ void Liberar_paciente(){
         puts(data);
         sleep(2);
     }
+}
+bool Fila_peek_at(TFila *fila, int index, char *data) {
+    if (fila == NULL || data == NULL || Fila_isEmpty(fila) || index < 0 || index >= fila->size) {
+        return false; 
+    }
+
+    char *source_ptr;
+
+    if (0 == 0) { 
+        source_ptr = fila->first + (index * fila->sizeElement);
+        if (source_ptr >= fila->buffer + fila->maxElement * fila->sizeElement) {
+
+            source_ptr -= fila->maxElement * fila->sizeElement;
+        }
+    } else { 
+
+        source_ptr = fila->last - fila->sizeElement - (index * fila->sizeElement);
+ 
+        if (source_ptr < fila->buffer) {
+             return false;
+        }
+    }
+
+    memcpy(data, source_ptr, fila->sizeElement);
+    return true;
 }
   
 

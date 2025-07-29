@@ -150,7 +150,7 @@ int main(void) {
 
     TFila filaPacientes;
     int maxQueueCapacity = 10;
-    Fila_create(&filaPacientes, sizeof(Paciente), maxQueueCapacity, TYPE_FILA);
+    Fila_create(&filaPacientes, sizeof(Paciente), maxQueueCapacity);
 
     Paciente pacientesParaMover[MAX_MOVING_PATIENTS];
     int numPacientesParaMover = 0;
