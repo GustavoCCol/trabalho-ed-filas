@@ -25,7 +25,7 @@ Descrição: Simula laboratório com fila única e múltiplos atendentes, inclui
 - Udson Marçal  
 
 ## Problemas Encontrados
-- Resolvidos.
+- .
 
 ## Metas Iniciais
-- Finalizar os slides.
+- .
